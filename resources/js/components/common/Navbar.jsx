@@ -94,12 +94,116 @@ export default function Navbar() {
             </Button>
           </div>
 
-
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <button
+              onClick={toggleMobileMenu}
+              className="text-gray-700 hover:text-blue-600 focus:outline-none focus:text-blue-600 transition-colors duration-200"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden" onClick={toggleMobileMenu} />
+      )}
 
+      {/* Mobile Menu */}
+      <div
+        className={`fixed top-0 left-0 h-full w-80 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 md:hidden ${
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="p-6">
+          {/* Mobile Logo */}
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center space-x-2">
+              <img src={ Logo } alt="oyt logo" width="100" />
+            </div>
+            <button onClick={toggleMobileMenu} className="text-gray-700 hover:text-blue-600 focus:outline-none">
+              <X className="w-6 h-6" />
+            </button>
+          </div>
 
+          {/* Mobile Navigation Links */}
+          <div className="space-y-4">
+            <a
+              href="#home"
+              className="block text-gray-700 hover:text-blue-600 py-3 text-lg font-medium transition-colors duration-200"
+              onClick={toggleMobileMenu}
+            >
+              Home
+            </a>
+            <a
+              href="#about"
+              className="block text-gray-700 hover:text-blue-600 py-3 text-lg font-medium transition-colors duration-200"
+              onClick={toggleMobileMenu}
+            >
+              About
+            </a>
+
+            {/* Mobile Services Dropdown */}
+            <div>
+              <button
+                onClick={() => setIsServicesOpen(!isServicesOpen)}
+                className="flex items-center justify-between w-full text-gray-700 hover:text-blue-600 py-3 text-lg font-medium transition-colors duration-200"
+              >
+                <span>Services</span>
+                <ChevronDown
+                  className={`w-5 h-5 transition-transform duration-200 ${isServicesOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+              <div
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                  isServicesOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                }`}
+              >
+                <div className="pl-4 space-y-2 mt-2">
+                  {services.map((service) => (
+                    <a
+                      key={service.name}
+                      href={service.href}
+                      className="flex items-center space-x-3 py-2 text-gray-600 hover:text-blue-600 transition-colors duration-200"
+                      onClick={toggleMobileMenu}
+                    >
+                      <service.icon className="w-4 h-4" />
+                      <span>{service.name}</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <a
+              href="#destinations"
+              className="block text-gray-700 hover:text-blue-600 py-3 text-lg font-medium transition-colors duration-200"
+              onClick={toggleMobileMenu}
+            >
+              Destinations
+            </a>
+            <a
+              href="#contact"
+              className="block text-gray-700 hover:text-blue-600 py-3 text-lg font-medium transition-colors duration-200"
+              onClick={toggleMobileMenu}
+            >
+              Contact
+            </a>
+
+            {/* Mobile CTA Button */}
+            <div className="pt-6">
+              <Button
+                className="w-full bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white py-3 rounded-full transition-all duration-200 transform hover:scale-105"
+                onClick={toggleMobileMenu}
+              >
+                Book Now
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
     </nav>
   )
 }
