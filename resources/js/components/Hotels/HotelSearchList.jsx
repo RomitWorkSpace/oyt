@@ -1,12 +1,26 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import HotelFilter from './HotelFilter'
 import HotelList from './HotelList'
 import SearchForm from './SearchForm'
 import { Hotels } from '../common/HotelData'
+import { useLocation } from 'react-router-dom'
 
 function HotelSearchList() {
 
+    const location = useLocation()
     const [filteredProduct, setFilteredProduct] = useState(Hotels)
+    const [isFormSubmitted, setIsFormSubmitted] = useState(false)
+    const [searchData, setSearchData] = useState({
+        location : '',
+        searchLocation:'',
+        searchCity : '',
+        searchState: '',
+        check_in : '',
+        check_out: '',
+        adults: 1,
+        children: 0,
+        rooms: 1
+    })
     const [appliedFilter, setAppliedFilter] = useState({
         price : [],
         starRating : [],
@@ -29,11 +43,19 @@ function HotelSearchList() {
         setAppliedFilter(updatedFilter)
     }
 
+    useEffect(()=>{
+        if(location.state){
+            const data = location.state
+            setSearchData(data)
+        }
+
+    },[isFormSubmitted])
+
     return (
         <>
         <div className="container-fluid pt-1 pb-3 bg-primary">
             <div className="max-w-6xl mx-auto">
-                <SearchForm />
+                <SearchForm formData={searchData} formStatus={setIsFormSubmitted} />
             </div>
         </div>
 
@@ -56,7 +78,7 @@ function HotelSearchList() {
                     </div>
                     <div className="md:w-[74%] px-3">
                         {filteredProduct && filteredProduct.map((product,index)=>
-                            <HotelList Hotel={product} id={index} />
+                            <HotelList Hotel={product} id={index} data={searchData} />
                         )}
                     </div>
                 </div>
